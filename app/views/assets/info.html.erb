@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>Asset Metrics</title>
+    </head>
+    <body>
+        <h1><%= params[:type] == "css" ? "Stylesheet" : "Javascript" %> Metrics on <%= Time.zone.now %></h1>
+        (See <%= link_to "Javascript Metrics", params.merge(:type => "js") %> or <%= link_to "Stylesheet Metrics", params.merge(:type => "css") %>)
+        
+        <h2>Totals</h2>
+        <ul>
+            <li>Total Overall (# minified bytes of all files): <%= number_to_human_size(@total_overall) %></li>
+            <li>Total Download (# bytes transfered to user): <%= number_to_human_size(@total_download) %></li>
+            <li>Library Total (# bytes in libraries): <%= number_to_human_size(@library_total) %></li>
+            <li>Dynamic Total (# bytes of instance code): <%= number_to_human_size(@total_overall - @library_total) %></li>
+            <li>Dynamic Download (sum of all controller/action downloads): <%= number_to_human_size(@dynamic_total) %></li>
+            <li>Number of actions (that have any JS/CSS code): <%= @number_actions %></li>
+            <li>Dynamic Download per Action: <%= number_with_delimiter((@dynamic_total.to_f / @number_actions).round(2)) %></li>
+            <li>Dynamic Source per Action: <%= number_with_delimiter(((@total_overall - @library_total).to_f / @number_actions).round(2)) %></li>
+        </ul>
+
+        <h2>Library File Sizes</h2>
+        <ul>
+        <% @library_sizes.each_pair do |k, v| %>
+            <li><%= k + (params[:type] == "css" ? ".css" : ".js") %>: <%= number_to_human_size(v) %></li>
+        <% end %>
+        </ul>
+
+        <h2>All Files</h2>
+        <table>
+            <% @all_files.each do |d| %>
+                <tr style="<%= d[0].ends_with?(params[:type] == "css" ? ".css" : ".js") ?  "" : "background-color: #DDD" %>"><td><%= d[0] %></td><td><%= number_to_human_size(d[1]) %></td></tr>
+            <% end %>
+        </table>
+    </body>
+</html>

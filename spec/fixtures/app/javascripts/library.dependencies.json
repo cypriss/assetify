@@ -1,0 +1,58 @@
+{
+    "A.js": {
+        
+    },
+    
+    "library": {
+        "deps": ["vendor"],
+        
+        "B.js": {
+            "deps": "fold1/fold3"
+        },
+        
+        "fold1": {
+            "D.js": {
+                "deps": ["fold3", "../B.js"]
+            },
+            
+            "fold2": {
+                
+                "C.js": {
+                    
+                },
+                
+                "E.js": {
+                    
+                }
+            },
+            
+            "fold3": {
+                "X.js": {
+                    "deps": ["../fold2/C.js"]
+                },
+                
+                "Y.js": {
+                    "deps": ["../fold2/E.js", "X.js"]
+                },
+                
+                "Z.js": {
+                    "deps": ["../fold2", "Y.js"]
+                }
+            }
+        }
+    },
+    
+    "vendor": {
+        "F.js": {
+            "deps": "../A.js"
+        },
+        
+        "G.js": {
+            "deps": "F.js"
+        },
+        
+        "H.js": {
+            "deps": ["F.js", "G.js"]
+        }
+    }
+}

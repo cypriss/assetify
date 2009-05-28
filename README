@@ -1,0 +1,22 @@
+Assetify
+=============
+
+TODO:
+ - Change the asset compressor to just be some static methods instead of instantiatable.  Both std and multi.  Fix rake/info
+ - Specs for info
+ - integrate W3C validation of CSS files.  JS files too?
+ - JS lint?
+ - Plugins!
+ - Comments
+ - Docs
+
+
+NOTE: this plugin is not meant to handle all classes of websites.  It may not even handle most of them.  It handles websites that I build, though.
+
+Example
+=======
+
+Example goes here.
+
+
+Copyright (c) 2009 Jonathan Novak, released under the MIT license

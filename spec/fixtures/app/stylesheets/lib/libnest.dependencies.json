@@ -1,0 +1,12 @@
+{
+    "C.css": {},
+    "D.css": {
+        "deps": "C.css"
+    },
+    "ohboy": {
+        "deps": "D.css",
+        "ohboy.dependencies.json": {
+            
+        }
+    }
+}

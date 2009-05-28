@@ -1,0 +1,20 @@
+{
+    "A.js": {
+        
+    },
+    
+    "dynamic": {
+        "home.js": {
+            "deps": ["../A.js"]
+        },
+        
+        "home": {
+            "deps": "home.js",
+            
+            "index.js": {
+                
+            }
+        }
+        
+    }
+}

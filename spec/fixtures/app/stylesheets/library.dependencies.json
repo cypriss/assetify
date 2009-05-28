@@ -1,0 +1,14 @@
+{
+    "A.css": {},
+    "B.css": {
+        "deps": "A.css"
+    },
+    
+    "lib": {
+        "deps": "B.css",
+        
+        "lib.dependencies.json": {
+            
+        }
+    }
+}
