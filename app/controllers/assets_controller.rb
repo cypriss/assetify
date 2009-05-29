@@ -1,6 +1,6 @@
 require 'fileutils'
 
-class AssetsController < ApplicationController
+class AssetsController < ActionController::Base
   
   caches_page :show
   caches_page :dynamic
