@@ -85,6 +85,7 @@ module AssetifyHelper
   
   def assetify_timestamp_bottom(options = {})
     library = options.delete(:library) || :mootools
+    output = options.delete(:output) || :console
     
     domready_function = {
       :mootools   =>  "window.addEvent('domready',function(){",
@@ -99,10 +100,16 @@ module AssetifyHelper
           #{domready_function}
               $loadTimes.domReady = new Date().getTime();
             
-              if (console && console.log) {
-                console.log("domTop to domMiddle: ", ($loadTimes.domMiddle - $loadTimes.domHeader));
-                console.log("domTop to domEnd: ", ($loadTimes.domBottom - $loadTimes.domHeader));
-                console.log("domTop to domReady: ", ($loadTimes.domReady - $loadTimes.domHeader));
+              var str = "DomTop to (Middle, Bottom, DomReady): (" +
+                        ($loadTimes.domMiddle - $loadTimes.domHeader) + ", " +
+                        ($loadTimes.domBottom - $loadTimes.domHeader) + ", " +
+                        ($loadTimes.domReady - $loadTimes.domHeader) + ")" +
+                        " DomReady: " + ($loadTimes.domReady - $loadTimes.domBottom);
+              
+              if (#{output == :console} && console && console.log) {
+                  console.log(str);
+              } else if (#{output == :function}) {
+                  #{options[:function]}(str);
               }
         });
         
