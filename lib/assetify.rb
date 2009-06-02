@@ -3,6 +3,11 @@ module Assetify
   class NoSuchAssetException < Exception; end
   
   class << self
+    def compress_assets=(val)
+      # the !! is to force the value to a bool
+      @compression_enabled = !!val
+    end
+    
     def js_library_source(library)
       filter_with_compression(secretary_for(library, :js).full_concatenation, :type => :js)
     end
@@ -41,7 +46,7 @@ module Assetify
       end
       
       def compress_assets?
-        Rails.env.production?
+        @compression_enabled || false
       end
   end
 end
