@@ -10,15 +10,14 @@ module Assetify
     
     def compress(options = {})
       type = (options.delete(:type) || "js").to_s
-      data = nil
-      Tempfile.open("assetify") do |f|
-        f.write(@data)
-        f.flush
-        
-        data = `java -jar #{COMPRESSOR} --type #{type} #{f.path}`
+      
+      data = IO.popen("java -jar #{COMPRESSOR} --type #{type}", 'r+') do |io|
+        io.write(@data)
+        io.close_write
+        io.read
       end
       
-      data || ""
+      data || ''
     end
   end
 end
