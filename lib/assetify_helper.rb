@@ -19,11 +19,15 @@ module AssetifyHelper
     include_print = options.delete(:include_print)
     include_ie = options.delete(:include_ie)
     
+    primary_options = {} # TODO: this needs a test
+    primary_media_type = options.delete(:primary_media_type)
+    primary_options[:media] = primary_media_type if primary_media_type
+    
     tags = []
 
     asset = "/assets/#{library}.css"
     fix_rails_asset_cache(asset)
-    tags << stylesheet_link_tag(asset)
+    tags << stylesheet_link_tag(asset, primary_options)
     
     if include_print
       asset = "/assets/#{library}/print.css"
@@ -45,12 +49,16 @@ module AssetifyHelper
     act = options.delete(:action) || params[:action]
     include_print = options.delete(:include_print)
     include_ie = options.delete(:include_ie)
+      
+    primary_options = {} # TODO: this needs a test
+    primary_media_type = options.delete(:primary_media_type)
+    primary_options[:media] = primary_media_type if primary_media_type
     
     tags = []
     
     asset = "/assets/dynamic/#{cont}/#{act}.css"
     fix_rails_asset_cache(asset)
-    tags << stylesheet_link_tag(asset)
+    tags << stylesheet_link_tag(asset, primary_options)
     
     if include_print
       asset = "/assets/dynamic/#{cont}/#{act}/print.css"

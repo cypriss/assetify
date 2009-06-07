@@ -68,4 +68,15 @@ describe Assetify do
       Assetify.js_library_source("doesntexist")
     }.should raise_error(Assetify::NoSuchAssetException)
   end
+  
+  it "should be able to enable asset compression" do
+    Assetify.compress_assets = true
+    Assetify.should_receive(:compress_assets?).and_return(true)
+    Assetify.js_library_source("library")
+  end
+  
+  it "should have asset compression disabled by default" do
+    Assetify.should_receive(:compress_assets?).and_return(false)
+    Assetify.js_library_source("library")
+  end
 end
