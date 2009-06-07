@@ -106,7 +106,7 @@ module AssetifyHelper
                         ($loadTimes.domReady - $loadTimes.domHeader) + ")" +
                         " DomReady: " + ($loadTimes.domReady - $loadTimes.domBottom);
               
-              if (#{output == :console} && console && console.log) {
+              if (#{output == :console} && (typeof console != "undefined") && console.log) {
                   console.log(str);
               } else if (#{output == :function}) {
                   #{options[:function]}(str);
