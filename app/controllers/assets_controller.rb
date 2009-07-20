@@ -91,7 +91,7 @@ class AssetsController < ActionController::Base
     
     # Some totals
     @library_total = @library_sizes.values.inject(0) {|sum, item| sum + item }
-    @number_actions = [Dir[Rails.root.join("app/stylesheets/dynamic/*/*")].length, Dir[Rails.root.join("app/javscripts/dynamic/*/*")].length].max
+    @number_actions = [Dir[Rails.root.join("app/stylesheets/dynamic/*/*")].length, Dir[Rails.root.join("app/javascripts/dynamic/*/*")].length].max
     @dynamic_total = @dynamic_actions.inject(0) {|sum, item| sum + item[2] }
     @total_download = @dynamic_total + @library_total
     
