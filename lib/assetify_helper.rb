@@ -76,53 +76,59 @@ module AssetifyHelper
   end
   
   def assetify_timestamp_header
-    <<-JS_TIMESTAMP
-      <script type="text/javascript">
-          var $loadTimes = {domHeader: new Date().getTime()};
-      </script>
-    JS_TIMESTAMP
+    unless Assetify.disable_diagnostics
+      <<-JS_TIMESTAMP
+        <script type="text/javascript">
+            var $loadTimes = {domHeader: new Date().getTime()};
+        </script>
+      JS_TIMESTAMP
+    end
   end
   
   def assetify_timestamp_after_body
-    <<-JS_TIMESTAMP
-      <script type="text/javascript">
-          $loadTimes.domMiddle = new Date().getTime();
-      </script>
-    JS_TIMESTAMP
+    unless Assetify.disable_diagnostics
+      <<-JS_TIMESTAMP
+        <script type="text/javascript">
+            $loadTimes.domMiddle = new Date().getTime();
+        </script>
+      JS_TIMESTAMP
+    end
   end
   
   def assetify_timestamp_bottom(options = {})
-    library = options.delete(:library) || :mootools
-    output = options.delete(:output) || :console
-    
-    domready_function = {
-      :mootools   =>  "window.addEvent('domready',function(){",
-      :jquery     =>  "$(document).ready(function(){",
-      :prototype  =>  "document.observe('dom:loaded',function(){"
-    }[library]
-    
-    <<-JS_TIMESTAMP
-      <script type="text/javascript">
-          $loadTimes.domBottom = new Date().getTime();
-        
-          #{domready_function}
-              $loadTimes.domReady = new Date().getTime();
-            
-              var str = "DomTop to (Middle, Bottom, DomReady): (" +
-                        ($loadTimes.domMiddle - $loadTimes.domHeader) + ", " +
-                        ($loadTimes.domBottom - $loadTimes.domHeader) + ", " +
-                        ($loadTimes.domReady - $loadTimes.domHeader) + ")" +
-                        " DomReady: " + ($loadTimes.domReady - $loadTimes.domBottom);
+    unless Assetify.disable_diagnostics
+      library = options.delete(:library) || :mootools
+      output = options.delete(:output) || :console
+      
+      domready_function = {
+        :mootools   =>  "window.addEvent('domready',function(){",
+        :jquery     =>  "$(document).ready(function(){",
+        :prototype  =>  "document.observe('dom:loaded',function(){"
+      }[library]
+      
+      <<-JS_TIMESTAMP
+        <script type="text/javascript">
+            $loadTimes.domBottom = new Date().getTime();
+          
+            #{domready_function}
+                $loadTimes.domReady = new Date().getTime();
               
-              if (#{output == :console} && (typeof console != "undefined") && console.log) {
-                  console.log(str);
-              } else if (#{output == :function}) {
-                  #{options[:function]}(str);
-              }
-        });
-        
-      </script>
-    JS_TIMESTAMP
+                var str = "DomTop to (Middle, Bottom, DomReady): (" +
+                          ($loadTimes.domMiddle - $loadTimes.domHeader) + ", " +
+                          ($loadTimes.domBottom - $loadTimes.domHeader) + ", " +
+                          ($loadTimes.domReady - $loadTimes.domHeader) + ")" +
+                          " DomReady: " + ($loadTimes.domReady - $loadTimes.domBottom);
+                
+                if (#{output == :console} && (typeof console != "undefined") && console.log) {
+                    console.log(str);
+                } else if (#{output == :function}) {
+                    #{options[:function]}(str);
+                }
+          });
+          
+        </script>
+      JS_TIMESTAMP
+    end
   end
   
   private

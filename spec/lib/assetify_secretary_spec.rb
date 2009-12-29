@@ -16,77 +16,77 @@ describe Assetify::AssetSecretary do
   it "should use the dependency map to order two simple js files" do
     secretary = Assetify::AssetSecretary.new(@js_lib_map_basic, :type => :js)
     js = secretary.full_concatenation
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == "BA"
   end
   
   it "should use the dependency map to order two simple css files" do
     secretary = Assetify::AssetSecretary.new(@css_lib_map_basic, :type => :css)
     js = secretary.full_concatenation
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == "ED"
   end
   
   it "should use the dependency map to order files" do
     secretary = Assetify::AssetSecretary.new(@js_lib_map1, :type => :js)
     js = secretary.full_concatenation
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == "AFGHCXEYZBD"
   end
   
   it "should use the dep map to order files for a controller/view" do
     secretary = Assetify::AssetSecretary.new(@js_dyn_map1, :type => :js)
     js = secretary.concatenation_for_view("home", "index")
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == "AHOMEINDEX"
   end
   
   it "should handle an empty dependency map for a library" do
     secretary = Assetify::AssetSecretary.new(@js_lib_map_empty, :type => :js)
     js = secretary.full_concatenation
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == ""
   end
   
   it "should handle an empty dependency map for a dynamic and still return the controller/action files" do
     secretary = Assetify::AssetSecretary.new(@js_lib_map_empty, :type => :js)
     js = secretary.concatenation_for_view("home", "index")
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == "HOMEINDEX"
   end
   
   it "should utilize a nested dependency file" do
     secretary = Assetify::AssetSecretary.new(@css_lib_map_nested, :type => :css)
     js = secretary.full_concatenation
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == "ABCD"
   end
   
   it "should utilize multiple nested dependency files" do
     secretary = Assetify::AssetSecretary.new(@css_lib_map_really_nested, :type => :css)
     js = secretary.full_concatenation
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == "ABCDEF"
   end
   
   it "should return concatenations for a different kind" do
     secretary = Assetify::AssetSecretary.new(@css_lib_map_nested, :type => :css)
     js = secretary.full_concatenation(:ie)
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == "BiCiDi"
   end
   
   it "should return an empty concat for a different kind if that kind doesn't exist" do
     secretary = Assetify::AssetSecretary.new(@css_lib_map_basic, :type => :css)
     js = secretary.full_concatenation(:print)
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == ""
   end
   
   it "should return dynamic concats of a different kind" do
     secretary = Assetify::AssetSecretary.new(@css_dyn_map1, :type => :css)
     js = secretary.concatenation_for_view("home", "list", :print)
-    js.gsub!(/\s|\n|\r/m, "")
+    js = js.gsub(/\s|\n|\r/m, "")
     js.should == "HOMEpLISTp"
   end
   

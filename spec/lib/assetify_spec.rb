@@ -55,7 +55,7 @@ describe Assetify do
   
   it "should compress assets" do
     Assetify.send(:instance_variable_set, :@secretaries, {})
-    Assetify.should_receive(:compress_assets?).and_return(true)
+    Assetify.should_receive(:compress_assets).and_return(true)
     File.should_receive(:exist?).any_number_of_times.and_return(true)
     Assetify::AssetSecretary.should_receive(:new).once.and_return(mock(Object, :full_concatenation => "dood"))
     Assetify::AssetCompressor.should_receive(:new).once.and_return(mock(Object, :compress => "hello"))
@@ -71,12 +71,14 @@ describe Assetify do
   
   it "should be able to enable asset compression" do
     Assetify.compress_assets = true
-    Assetify.should_receive(:compress_assets?).and_return(true)
+    Assetify.should_receive(:compress_assets).and_return(true)
+    # NOTE/TODO: there needs to be a 'library' file to exist in the containing application with a valid json hash
     Assetify.js_library_source("library")
   end
   
   it "should have asset compression disabled by default" do
-    Assetify.should_receive(:compress_assets?).and_return(false)
+    Assetify.should_receive(:compress_assets).and_return(false)
+    # NOTE/TODO: there needs to be a 'library' file to exist in the containing application with a valid json hash
     Assetify.js_library_source("library")
   end
 end

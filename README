@@ -2,6 +2,11 @@ Assetify
 =============
 
 TODO:
+ - Generate default JSON files with '{}'
+ - handled nested/namespaced controllers
+ - Handle cases where we don't even need an include
+
+
  - Change the asset compressor to just be some static methods instead of instantiatable.  Both std and multi.  Fix rake/info
  - Specs for info
  - integrate W3C validation of CSS files.  JS files too?
@@ -20,4 +25,4 @@ Example
 Example goes here.
 
 
-Copyright (c) 2009 Jonathan Novak at WorkingPoint, released under the MIT license
+Copyright (c) 2009 Jonathan Novak, released under the MIT license

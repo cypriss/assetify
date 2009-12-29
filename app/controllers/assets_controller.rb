@@ -2,10 +2,14 @@ require 'fileutils'
 
 class AssetsController < ActionController::Base
   
-  caches_page :show
-  caches_page :dynamic
+  if Assetify.cache_mode == 'caches_page'
+    caches_page :show
+    caches_page :dynamic
+  end
   
   def show
+    response.headers['Cache-Control'] = 'public, max-age=43200' # Cache for 12 hours
+    
     respond_to do |wants|
       wants.js do
         render :text => Assetify.js_library_source(params[:id]), :content_type => "text/javascript"
@@ -21,6 +25,8 @@ class AssetsController < ActionController::Base
   end
   
   def dynamic
+    response.headers['Cache-Control'] = 'public, max-age=43200' # Cache for 12 hours
+    
     respond_to do |wants|
       wants.js do
         render :text => Assetify.js_dynamic_source(params[:cont], params[:act]), :content_type => "text/javascript"

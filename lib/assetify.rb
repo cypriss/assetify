@@ -3,10 +3,27 @@ module Assetify
   class NoSuchAssetException < Exception; end
   
   class << self
+    
+    # Setting: compress_assets, true or false
     def compress_assets=(val)
-      # the !! is to force the value to a bool
       @compression_enabled = !!val
     end
+    def compress_assets
+      @compression_enabled || false
+    end
+    
+    # Setting: cache_mode
+    # 'page': use caches_page
+    # 'rails.cache': use Rails.cache
+    # 'instance': cache on a per-VM basis (make a new instance of ActiveSupport::Cache::MemoryStore)
+    def cache_mode=(val)
+      @cache_mode = val if ['page', 'rails.cache', 'instance'].include?(val)
+    end
+    def cache_mode
+      @cache_mode || 'instance'
+    end
+    
+    attr_accessor :disable_diagnostics
     
     def js_library_source(library)
       filter_with_compression(secretary_for(library, :js).full_concatenation, :type => :js)
@@ -38,15 +55,11 @@ module Assetify
       end
       
       def filter_with_compression(string, options)
-        if compress_assets?
+        if compress_assets
           AssetCompressor.new(string).compress(options)
         else
           string
         end
-      end
-      
-      def compress_assets?
-        @compression_enabled || false
       end
   end
 end

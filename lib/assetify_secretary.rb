@@ -27,7 +27,11 @@ module Assetify
 
       @mtime = max_modified_time
       
-      @concatenations = {}
+      @concatenations = if Assetify.cache_mode == 'rails.cache'
+        Rails.cache # Implication: can't reset cache
+      else
+        ActiveSupport::Cache::MemoryStore.new
+      end
     end
 
     def something_changed?(controller = nil, action = nil)
@@ -47,13 +51,15 @@ module Assetify
     def full_concatenation(kind = :standard)
       reset! if something_changed?
 
-      @concatenations["::full::#{kind}"] ||= concatenate(topological_sort(@file_map), kind)
+      @concatenations.fetch("::full::#{kind}") do
+        concatenate(topological_sort(@file_map), kind)
+      end 
     end
 
     def concatenation_for_view(controller, action, kind = :standard)
       reset! if something_changed?(controller, action)
       
-      @concatenations["#{controller}:#{action}:#{kind}"] ||= begin
+      @concatenations.fetch("#{controller}:#{action}:#{kind}") do
         @included = []
         
         cont_file = dynamic_controller_file_name(controller)
