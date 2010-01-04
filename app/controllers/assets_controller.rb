@@ -2,7 +2,7 @@ require 'fileutils'
 
 class AssetsController < ActionController::Base
   
-  if Assetify.cache_mode == 'caches_page'
+  if Assetify.cache_mode == 'page'
     caches_page :show
     caches_page :dynamic
   end
